@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QCompress"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="700" ResizeMode="CanMinimize" AllowDrop="True">
+        Title="QCompress" Height="500" Width="700" ResizeMode="CanMinimize" AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter" DragLeave="Window_DragLeave">
     <DockPanel>
         <Grid DockPanel.Dock="Bottom" Height="50" RenderTransformOrigin="0.5,0.5">
             <Grid.ColumnDefinitions>
@@ -46,7 +46,7 @@
             </GroupBox>
         </Grid>
         <GroupBox x:Name="groupBox" Header="Output log" DockPanel.Dock="Right" Margin="3,3,10,0">
-            <TextBox x:Name="textBox" TextWrapping="Wrap" BorderThickness="0,0,0,0" Focusable="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas"/>
+            <TextBox x:Name="textBox" TextWrapping="Wrap" BorderThickness="0,0,0,0" Focusable="False" IsReadOnly="True" VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" HorizontalScrollBarVisibility="Auto" FontFamily="Consolas" AllowDrop="False"/>
         </GroupBox>
 
     </DockPanel>

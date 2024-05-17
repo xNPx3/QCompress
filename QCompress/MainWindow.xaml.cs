@@ -43,6 +43,8 @@ namespace QCompress
         int videoHeight = 0;
         decimal videoFramerate = 1;
 
+        int audioBitrate = 0;
+
         long targetBitrate = 0;
         DateTime startTime = DateTime.UnixEpoch;
 
@@ -55,7 +57,11 @@ namespace QCompress
             };
             sfd = new SaveFileDialog
             {
-                DefaultExt = "mp4",
+                DefaultExt = ".mp4",
+                AddExtension = true,
+                CheckPathExists = true,
+                Filter = ofd.Filter,
+                OverwritePrompt = true,
             };
         }
 
@@ -64,16 +70,19 @@ namespace QCompress
             if (browseOK && vLoaded)
             {
                 decimal targetFileSize = decimal.Parse(targetTextBox.Text);
+                int abr = Settings.Default.MuteAudio ? 0 : audioBitrate;
 
                 targetBitrate = Convert.ToInt64(videoWidth * videoHeight * videoFramerate * 0.15m);
-                long estFileSize = Convert.ToInt64(targetBitrate * videoLength / 8);
-                if (estFileSize > targetFileSize * 1000000)
+                long estFileSize = Convert.ToInt64((targetBitrate + abr) * videoLength);
+
+                if (estFileSize > targetFileSize * 8000000)
                 {
-                    targetBitrate = Convert.ToInt64(targetFileSize * 8 * 1000000 / videoLength);
-                    estFileSize = Convert.ToInt64(targetBitrate * videoLength / 8);
+                    //targetBitrate = Convert.ToInt64(targetFileSize * 8000000 / videoLength);
+                    targetBitrate = Convert.ToInt64(targetFileSize * 8000000 / videoLength - abr);
+                    estFileSize = Convert.ToInt64((targetBitrate + abr) * videoLength / 8);
                 }
 
-                Debug.WriteLine($"Estimated {estFileSize} B with bitrate {Convert.ToInt64(targetBitrate / 1000L)} kbit/s");
+                Debug.WriteLine($"Estimated {estFileSize} b with bitrate {Convert.ToInt64(targetBitrate / 1000L)} kbit/s");
                 bLabel.Content = $"{Convert.ToInt64(targetBitrate / 1000L)} kbit/s";
                 eLabel.Content = $"{Convert.ToInt64(estFileSize / 100000L) / 10d} MB";
             }
@@ -91,7 +100,7 @@ namespace QCompress
 
         void InputVideo()
         {
-            this.Title = "QuickCompress - " + videoPath;
+            this.Title = "QCompress - " + videoPath;
             browseOK = true;
             LoadVideo();
         }
@@ -106,10 +115,12 @@ namespace QCompress
             textBox.Clear();
 
             // Get video info
-            JsonNode node = JsonNode.Parse(Common.FF("ffprobe", $"-v error -select_streams v:0 -count_packets -show_streams -of json \"{videoPath}\"").ReadToEnd())!;
+            JsonNode node = JsonNode.Parse(Common.FF("ffprobe", $"-v error -count_packets -show_streams -of json \"{videoPath}\"").ReadToEnd())!;
 
             JsonNode data = node["streams"]![0]!;
             //string[] data = FF("ffprobe", $"-v error -select_streams v:0 -count_packets -show_entries stream=width,height,duration,nb_read_packets -of csv=p=0 \"{videoPath}\"").ReadToEnd().Split(',');
+
+            audioBitrate = int.Parse(node["streams"]![1]!["bit_rate"]!.ToString());
 
             videoWidth_orig = int.Parse(data["width"]!.ToString());
             videoHeight_orig = int.Parse(data["height"]!.ToString());
@@ -197,11 +208,12 @@ namespace QCompress
                 trimEnd = $"-to {Settings.Default.TrimEnd:mm':'ss} ";
             }
 
+            
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = Path.Join(AppSettings.Default.FFmpegPath, "ffmpeg.exe"),
-                Arguments = $"-y {trimStart}{trimEnd}-i \"{videoPath}\" {scale}{muteAudio}{framerate}-vcodec libx264 -b {Convert.ToInt64(targetBitrate / 1000L)}k -loglevel error -progress - -nostats \"{outPath}\"",
+                Arguments = $"-y {trimStart}{trimEnd}-i \"{videoPath}\" {scale}{muteAudio}{framerate}-vcodec libx264 -b:v {Convert.ToInt64(targetBitrate / 1000L)}k -loglevel error -progress - -nostats \"{outPath}\"",
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
                 RedirectStandardOutput = true,
@@ -294,6 +306,30 @@ namespace QCompress
         private void targetTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             ChangeBitrate();
+        }
+
+        private void Window_Drop(object sender, DragEventArgs e)
+        {
+            selectbutton.Background = null;
+            if (e.Data != null)
+            {
+                var input = e.Data.GetData(DataFormats.FileDrop);
+                if (e.Data != null && input != null)
+                {
+                    videoPath = ((string[])input)[0];
+                    InputVideo();
+                }
+            }
+        }
+
+        private void Window_DragEnter(object sender, DragEventArgs e)
+        {
+            selectbutton.Background = SystemColors.GradientActiveCaptionBrush;
+        }
+
+        private void Window_DragLeave(object sender, DragEventArgs e)
+        {
+            selectbutton.Background = null;
         }
     }
 }
