@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QCompress"
         mc:Ignorable="d"
-        Title="QCompress" Height="500" Width="700" ResizeMode="CanMinimize" AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter" DragLeave="Window_DragLeave">
+        Title="QCompress" Height="500" Width="700" ResizeMode="CanMinimize" AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter" DragLeave="Window_DragLeave" Loaded="Window_Loaded">
     <DockPanel>
         <Grid DockPanel.Dock="Bottom" Height="50" RenderTransformOrigin="0.5,0.5">
             <Grid.ColumnDefinitions>

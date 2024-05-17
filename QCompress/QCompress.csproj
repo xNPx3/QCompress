@@ -1,44 +1,56 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows10.0.22000.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
+		<AssemblyVersion>0.0.1</AssemblyVersion>
+		<FileVersion>0.0.1</FileVersion>
+		<StartupObject></StartupObject>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="video.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="video.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="video.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="video.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="AppSettings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AppSettings.settings</DependentUpon>
-    </Compile>
-    <Compile Update="Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="squirrel.windows" Version="2.0.1" GeneratePathProperty="true" />
+	</ItemGroup>
+	<ItemGroup>
+		<!-- workaround for https://github.com/Squirrel/Squirrel.Windows/issues/1649 -->
+		<Reference Include="$(PkgSquirrel_Windows)\lib\Net45\*.dll" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="AppSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
-    </None>
-    <None Update="Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="AppSettings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>AppSettings.settings</DependentUpon>
+		</Compile>
+		<Compile Update="Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="AppSettings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
+		</None>
+		<None Update="Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
 </Project>

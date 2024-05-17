@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Squirrel;
+using System.Threading.Tasks;
 
 namespace QCompress
 {
@@ -51,6 +53,7 @@ namespace QCompress
         public MainWindow()
         {
             InitializeComponent();
+
             ofd = new OpenFileDialog
             {
                 Filter = "All files|*.*"
@@ -208,7 +211,7 @@ namespace QCompress
                 trimEnd = $"-to {Settings.Default.TrimEnd:mm':'ss} ";
             }
 
-            
+
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -330,6 +333,15 @@ namespace QCompress
         private void Window_DragLeave(object sender, DragEventArgs e)
         {
             selectbutton.Background = null;
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+#if DEBUG
+            Debug.WriteLine("Debug, don't update");
+#else
+            await Common.CheckForUpdates();
+#endif
         }
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Squirrel;
+using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -59,6 +57,12 @@ namespace QCompress
             }
 
             return StreamReader.Null;
+        }
+
+        public static async Task CheckForUpdates()
+        {
+            using var mgr = UpdateManager.GitHubUpdateManager("https://github.com/xNPx3/QCompress");
+            await mgr.Result.UpdateApp();
         }
     }
 }
