@@ -72,7 +72,11 @@ namespace QCompress
         {
             if (browseOK && vLoaded)
             {
-                decimal targetFileSize = decimal.Parse(targetTextBox.Text);
+                decimal targetFileSize = 0;
+                decimal.TryParse(targetTextBox.Text, out targetFileSize);
+                if (targetFileSize <= 0)
+                    return;
+
                 int abr = Settings.Default.MuteAudio ? 0 : audioBitrate;
 
                 targetBitrate = Convert.ToInt64(videoWidth * videoHeight * videoFramerate * 0.15m);
@@ -335,12 +339,11 @@ namespace QCompress
             selectbutton.Background = null;
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Initialized(object sender, EventArgs e)
         {
-#if DEBUG
-            Debug.WriteLine("Debug, don't update");
-#else
-            await Common.CheckForUpdates();
+            Debug.WriteLine("Window_Initialized");
+#if (!DEBUG)
+            Common.CheckForUpdates();
 #endif
         }
     }

@@ -59,10 +59,22 @@ namespace QCompress
             return StreamReader.Null;
         }
 
-        public static async Task CheckForUpdates()
+        public static async void CheckForUpdates()
         {
-            using var mgr = UpdateManager.GitHubUpdateManager("https://github.com/xNPx3/QCompress");
-            await mgr.Result.UpdateApp();
+            try
+            {
+                using (var mgr = await UpdateManager.GitHubUpdateManager("https://github.com/xNPx3/QCompress"))
+                {
+                    var release = await mgr.UpdateApp();
+                }
+            }
+            catch (Exception ex)
+            {
+                string message = "UpdateManager:" + Environment.NewLine + ex.Message + Environment.NewLine;
+                if (ex.InnerException != null)
+                    message += ex.InnerException.Message;
+                MessageBox.Show(message);
+            }
         }
     }
 }
