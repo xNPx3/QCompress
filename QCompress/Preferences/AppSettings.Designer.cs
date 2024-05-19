@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace QCompress {
+namespace QCompress.Preferences {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

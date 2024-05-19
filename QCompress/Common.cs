@@ -32,7 +32,7 @@ namespace QCompress
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = Path.Join(AppSettings.Default.FFmpegPath, $"{exec}.exe"),
+                FileName = Path.Join(Preferences.AppSettings.Default.FFmpegPath, $"{exec}.exe"),
                 Arguments = args,
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,

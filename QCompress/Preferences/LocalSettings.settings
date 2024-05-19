@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="QCompress" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="QCompress.Preferences" GeneratedClassName="LocalSettings">
   <Profiles />
   <Settings>
     <Setting Name="CustomResolutionEnabled" Type="System.Boolean" Scope="User">
@@ -14,7 +14,7 @@
     <Setting Name="MuteAudio" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="CustomFramerate" Type="System.Boolean" Scope="User">
+    <Setting Name="CustomFramerateEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Framerate" Type="System.Int32" Scope="User">

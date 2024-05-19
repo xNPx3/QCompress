@@ -7,10 +7,7 @@ using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Squirrel;
-using System.Threading.Tasks;
 
 namespace QCompress
 {
@@ -77,7 +74,7 @@ namespace QCompress
                 if (targetFileSize <= 0)
                     return;
 
-                int abr = Settings.Default.MuteAudio ? 0 : audioBitrate;
+                int abr = Preferences.LocalSettings.Default.MuteAudio ? 0 : audioBitrate;
 
                 targetBitrate = Convert.ToInt64(videoWidth * videoHeight * videoFramerate * 0.15m);
                 long estFileSize = Convert.ToInt64((targetBitrate + abr) * videoLength);
@@ -196,30 +193,30 @@ namespace QCompress
 
             // Set custom output resolution if enabled
             string scale = "";
-            if (Settings.Default.CustomResolutionEnabled)
-                scale = $"-vf scale={Settings.Default.RWidth}:{Settings.Default.RHeight},setsar=1:1 ";
+            if (Preferences.LocalSettings.Default.CustomResolutionEnabled)
+                scale = $"-vf scale={Preferences.LocalSettings.Default.RWidth}:{Preferences.LocalSettings.Default.RHeight},setsar=1:1 ";
 
             string muteAudio = "";
-            if (Settings.Default.MuteAudio)
+            if (Preferences.LocalSettings.Default.MuteAudio)
                 muteAudio = "-an ";
 
             string framerate = "";
-            if (Settings.Default.CustomFramerate)
-                framerate = $"-filter:v fps={Settings.Default.Framerate} ";
+            if (Preferences.LocalSettings.Default.CustomFramerateEnabled)
+                framerate = $"-filter:v fps={Preferences.LocalSettings.Default.Framerate} ";
 
             string trimStart = "";
             string trimEnd = "";
-            if (Settings.Default.TrimVideoEnabled)
+            if (Preferences.LocalSettings.Default.TrimVideoEnabled)
             {
-                trimStart = $"-ss {Settings.Default.TrimStart:mm':'ss} ";
-                trimEnd = $"-to {Settings.Default.TrimEnd:mm':'ss} ";
+                trimStart = $"-ss {Preferences.LocalSettings.Default.TrimStart:mm':'ss} ";
+                trimEnd = $"-to {Preferences.LocalSettings.Default.TrimEnd:mm':'ss} ";
             }
 
 
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = Path.Join(AppSettings.Default.FFmpegPath, "ffmpeg.exe"),
+                FileName = Path.Join(Preferences.AppSettings.Default.FFmpegPath, "ffmpeg.exe"),
                 Arguments = $"-y {trimStart}{trimEnd}-i \"{videoPath}\" {scale}{muteAudio}{framerate}-vcodec libx264 -b:v {Convert.ToInt64(targetBitrate / 1000L)}k -loglevel error -progress - -nostats \"{outPath}\"",
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
@@ -345,6 +342,38 @@ namespace QCompress
 #if (!DEBUG)
             Common.CheckForUpdates();
 #endif
+        }
+
+        private void settingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)new SettingsWindow(videoLength_orig, videoFramerate_orig).ShowDialog()!)
+            {
+                if (Preferences.LocalSettings.Default.TrimVideoEnabled)
+                {
+                    videoLength = Convert.ToInt32(Preferences.LocalSettings.Default.TrimEnd.TotalSeconds - Preferences.LocalSettings.Default.TrimStart.TotalSeconds);
+                    videoFrameCount = Convert.ToInt32(videoLength * videoFramerate);
+                    progBar.Maximum = videoFrameCount;
+                }
+                else
+                    videoLength = videoLength_orig;
+
+                if (Preferences.LocalSettings.Default.CustomFramerateEnabled)
+                    videoFramerate = Preferences.LocalSettings.Default.Framerate;
+                else
+                    videoFramerate = videoFramerate_orig;
+
+                if (Preferences.LocalSettings.Default.CustomResolutionEnabled)
+                {
+                    videoWidth = Preferences.LocalSettings.Default.RWidth;
+                    videoHeight = Preferences.LocalSettings.Default.RHeight;
+                }
+                else
+                {
+                    videoWidth = videoWidth_orig;
+                    videoHeight = videoHeight_orig;
+                }
+                ChangeBitrate();
+            }
         }
     }
 }

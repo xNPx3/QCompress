@@ -8,16 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace QCompress {
+namespace QCompress.Preferences {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.7.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    internal sealed partial class LocalSettings : global::System.Configuration.ApplicationSettingsBase {
         
-        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        private static LocalSettings defaultInstance = ((LocalSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new LocalSettings())));
         
-        public static Settings Default {
+        public static LocalSettings Default {
             get {
                 return defaultInstance;
             }
@@ -74,12 +74,12 @@ namespace QCompress {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool CustomFramerate {
+        public bool CustomFramerateEnabled {
             get {
-                return ((bool)(this["CustomFramerate"]));
+                return ((bool)(this["CustomFramerateEnabled"]));
             }
             set {
-                this["CustomFramerate"] = value;
+                this["CustomFramerateEnabled"] = value;
             }
         }
         

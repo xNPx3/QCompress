@@ -18,16 +18,18 @@
         <Grid RenderTransformOrigin="0.5,0.5" Width="350" Margin="0,0,3,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
-                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3
+                               *"/>
             </Grid.RowDefinitions>
             <GroupBox x:Name="groupBox1" Header="Input" Margin="10,3,0,0">
                 <Button x:Name="selectbutton" BorderThickness="0,0,0,0" Click="selectbutton_Click" Background="{x:Null}">
-                    <Image x:Name="image" Source="/video.png"/>
+                    <Image x:Name="image" Source="/Content/video.png"/>
                 </Button>
             </GroupBox>
             <GroupBox x:Name="groupBox2" Header="Settings" Grid.Row="2" Margin="10,0,0,0">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -42,6 +44,7 @@
                     <Label x:Name="eLabel" Grid.Column="1" Content="0 MB" Grid.Row="2" VerticalContentAlignment="Center"/>
                     <Label Content="File size limit (MB)" VerticalContentAlignment="Center"/>
                     <TextBox x:Name="targetTextBox" Grid.Column="1" TextWrapping="Wrap" Text="25" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0,3,10,3" Padding="5,3,5,3" PreviewTextInput="targetTextBox_PreviewTextInput" TextChanged="targetTextBox_TextChanged"/>
+                    <Button x:Name="settingsButton" Grid.Column="1" Content="Settings" Margin="0,3,10,3" Grid.Row="3" Click="settingsButton_Click"/>
                 </Grid>
             </GroupBox>
         </Grid>

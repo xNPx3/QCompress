@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="video.png">
+		<Content Include="Content\video.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
@@ -28,29 +28,27 @@
 		<!-- workaround for https://github.com/Squirrel/Squirrel.Windows/issues/1649 -->
 		<Reference Include="$(PkgSquirrel_Windows)\lib\Net45\*.dll" />
 	</ItemGroup>
-
 	<ItemGroup>
-		<Compile Update="AppSettings.Designer.cs">
-			<DesignTimeSharedInput>True</DesignTimeSharedInput>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>AppSettings.settings</DependentUpon>
-		</Compile>
-		<Compile Update="Settings.Designer.cs">
-			<DesignTimeSharedInput>True</DesignTimeSharedInput>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Settings.settings</DependentUpon>
-		</Compile>
+	  <Compile Update="Preferences\AppSettings.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AppSettings.settings</DependentUpon>
+	  </Compile>
+	  <Compile Update="Preferences\LocalSettings.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>LocalSettings.settings</DependentUpon>
+	  </Compile>
 	</ItemGroup>
-
 	<ItemGroup>
-		<None Update="AppSettings.settings">
-			<Generator>SettingsSingleFileGenerator</Generator>
-			<LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
-		</None>
-		<None Update="Settings.settings">
-			<Generator>SettingsSingleFileGenerator</Generator>
-			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
-		</None>
+	  <None Update="Preferences\AppSettings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
+	  </None>
+	  <None Update="Preferences\LocalSettings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>LocalSettings.Designer.cs</LastGenOutput>
+	  </None>
 	</ItemGroup>
 
 </Project>
